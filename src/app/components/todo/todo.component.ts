@@ -1,4 +1,5 @@
 import { Component, effect } from '@angular/core';
+import { Todo } from 'src/app/models/todo';
 import { TodoService } from 'src/app/services/todo.service';
 
 @Component({
@@ -19,6 +20,9 @@ export class TodoComponent {
 
   ngOnInit(){
     this.todoService.fetchTodos();
+  }
+  updateTodo(todo:Todo){
+    this.todoService.updateTodo(todo);
   }
   deleteTodo(id:number){
     this.todoService.deleteTodo(id);

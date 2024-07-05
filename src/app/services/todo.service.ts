@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Observable, catchError, of } from 'rxjs';
 import { Todo } from '../models/todo';
+import { Title } from '@angular/platform-browser';
+import { randText } from '@ngneat/falso';
 @Injectable({
   providedIn: 'root'
 })
@@ -31,7 +33,20 @@ todoSignal=signal<Todo[]>([]);
         ).subscribe((todos)=>this.todoSignal.set(todos));
   }
 
-  updateTodo():void{
+  updateTodo(todo:Todo):void{
+      let newTodo={
+        id:todo.id,
+        title:randText(),
+        userId:todo.userId,
+        complete:todo.complete
+      }
+      const currentTodos= this.todoSignal();
+      const index = currentTodos.findIndex((x)=>x.id === todo.id);
+
+      if(index!==-1){
+        currentTodos[index]=newTodo;
+        this.todoSignal.set([...currentTodos]);
+      }
 
   }
 
