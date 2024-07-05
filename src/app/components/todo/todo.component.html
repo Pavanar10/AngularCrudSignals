@@ -10,6 +10,8 @@
             <tr *ngFor="let todo of todos">
                     <td>{{todo.title}}</td>
                     <td>{{todo.userId}}</td>
+                    <button>Update</button>
+                    <button (click)="deleteTodo(todo.id)">Delete</button>
             </tr>
         </tbody>
     </table>

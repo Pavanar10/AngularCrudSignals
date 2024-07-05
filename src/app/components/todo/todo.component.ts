@@ -7,20 +7,21 @@ import { TodoService } from 'src/app/services/todo.service';
   styleUrls: ['./todo.component.scss']
 })
 export class TodoComponent {
-  todos:any[]=[];
+  todos = this.todoService.todos;
+  error=this.todoService.error;
 
   constructor(private todoService:TodoService){
     effect(() => {
-      this.todos = this.todoService.todos();
+      this.todos = this.todoService.todos;
+      this.error = this.todoService.error;
     });
   }
 
-  getTodos(){
-    this.todos = this.todoService.todos();
-    console.log("todos",this.todos)
-  }
   ngOnInit(){
     this.todoService.fetchTodos();
+  }
+  deleteTodo(id:number){
+    this.todoService.deleteTodo(id);
   }
 
 }

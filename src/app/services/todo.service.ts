@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, of } from 'rxjs';
 import { Todo } from '../models/todo';
 @Injectable({
   providedIn: 'root'
@@ -8,19 +8,36 @@ import { Todo } from '../models/todo';
 
 
 export class TodoService {
-todos=signal<Todo[]>([]);
+todoSignal=signal<Todo[]>([]);
+ errorSignal = signal<string | null>(null);
   constructor(private http:HttpClient) { }
 
-  getTodos():Observable<any[]>{
-    return this.http.get<any[]>('https://jsonplaceholder.typicode.com/todos');
+  get todos(){
+    return this.todoSignal()
+  }
+
+  get error(){
+    return this.errorSignal()
   }
 
   //read todo
   fetchTodos():void{
-  this.http.get<Todo[]>('https://jsonplaceholder.typicode.com/todos')
-  .subscribe((todos)=>this.todos.set(todos)
-    )
-    console.log("in service",this.todos)
+    this.http.get<Todo[]>('https://jsonplaceholder.typicode.com/todos')
+      .pipe(
+        catchError(error=>{
+          this.errorSignal.set('Failed to fetch tools');
+          return of([])
+        })
+        ).subscribe((todos)=>this.todoSignal.set(todos));
+  }
+
+  updateTodo():void{
+
+  }
+
+  deleteTodo(id:number){
+    console.log("delete todo");
+    this.todoSignal.update((todo)=>todo.filter((x)=>x.id !=id));
   }
 
 }
