@@ -1,0 +1,16 @@
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>UserId</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let todo of todos">
+                    <td>{{todo.title}}</td>
+                    <td>{{todo.userId}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
